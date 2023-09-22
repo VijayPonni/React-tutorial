@@ -239,10 +239,74 @@ return accumulator
 console.log(maximumnumber)          // 1000
 ```
 
-#
-
 ## Transpilers:
 
 - Every browsers does not support the ES6 ( ECMA Script 2015 ). So , the transpilers compiles the ES5 to normal ECMA Script which browsers should understand.
 
 * Typescript is also the transpilers.
+
+# Creating first React Application:
+
+## Pre-requesties to create an React Application:
+
+- node
+- Text Editor - VS code
+
+## Approaches to create an React application:
+
+- Basically there are two aproaches are available to create an react application.They are:
+
+  - 1. npx create-react-app command line interface approach
+  - 2. installing the create-react-app npm package approach
+
+1. npx approach :
+
+   - npx is the npm package runner which gets installed when we install node.
+
+   * So, we are directly able to run the create-react-app command and project is created by npx.
+
+2. npm approach :
+
+   - In this method create-react-app npm package should be installed globally.
+
+   * Once the npm package is installed then react app should be created using command.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/npx_vs_npm_approaches.png" >
+
+## Step by Step guide to create an angular application using npx approach:
+
+step 1: install node / If already installed update and confirm the node version which you use using below command:
+
+        node -v
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/node_version.png" >
+
+Step 2: move to the directory where you want to create an React application.
+
+Step 3: In the terminal, run the below command:
+
+         npx create-react-app <your-react-app-name>
+
+        A react application will be created in the provided name as below image shows.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/first_react_app.png" >
+
+Step 4: Move to the newly created react application's directory:
+
+        cd <new-react-app-name>
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/react_app_directory.png" >
+
+Step 5: Run the React application using the below command:
+
+        npm start
+
+Once you type the command in terminal the react-app will get start running and in the browser, the application will be opened in the 3000 port in localhost
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/react_app_run.png" >
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/localhost_3000_browser.png" >
+
+Step 6: As mentioned in the running application Edit in App.Js file in your application and save. You can see the changes reflecting in the browser.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/Edited_react_app.png" >

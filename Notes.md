@@ -429,3 +429,75 @@ It has below files inside it:
 * In the index.js file, the ReactDOM renders the App component into the root DOM node.
 
 * The App component contains the html which is displayed in the browser.
+
+# Components
+
+## Basics about components
+
+- In React component refers the part of the User Inerface.
+
+* components basically partition the entire application with multiple parts. For Example, For a basic application there may components like below image shows:
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/component-structure_example.png" >
+
+- Components are re-usable.
+
+* A component can contain another component or components.
+
+## Component in Code
+
+- component is basically a java-script file or a file with .jsx extension. For Example App component refers to the App.js file.
+
+* This file will conatin the detail of the component. But the component code will differ based on the component types.
+
+## Component Types
+
+- There are two types of components. They are:
+
+  - Stateless Functional Components
+
+  * Statefull Class Components.
+
+### Stateless Functional Components:
+
+- Functional components are simply a java-script functions which returns the HTML that describes UI.
+
+- Example :
+
+```
+function example(componentType){
+    return <h1> Hi I am Just Example for { componentType } ... </h1>;
+}
+```
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/app_functional_component.png" >
+
+### Stateful Class Components:
+
+- Class Components are normal ES6 classes that extends the React Component from react-library.
+
+- This classmust have the render() method inside it.
+
+- The render() method should return the HTML that describes the UI.
+
+- Example:
+
+```
+import { Component } from { reactLibrary.. };
+
+Class example extends Componment{
+    render(){
+        return <h1> Hi I am Just Example for { componentType } ... </h1>;
+    }
+}
+```
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/app_class_component.png" >
+
+<br>
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/types_of_components.png" >
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/components_summary.png" >
+
+# Functional Components in detail:

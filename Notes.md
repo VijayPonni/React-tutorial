@@ -310,3 +310,122 @@ Once you type the command in terminal the react-app will get start running and i
 Step 6: As mentioned in the running application Edit in App.Js file in your application and save. You can see the changes reflecting in the browser.
 
 <img style="margin-top:10px;margin-bottom:10px" src="assets/Edited_react_app.png" >
+
+# React Application Folder Structure
+
+- When we create an React application, a brand new appication is created and have some files and folders as default as below:
+
+- There are three folders and four files under application's-root-directory as below:
+
+  - node-modules Folder
+  - public Folder
+  - src Folder
+
+  - .gitignore File
+  - package-lock.json File
+  - package.json File
+  - README.md File
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/Folder_structure.png" >
+
+## Explanation on Files
+
+### package.json
+
+- package.json is a file which contains the dependencies and scripts for the project.
+
+* It has the details like version of react application and scripts that runs,builds and even tests the react application.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/package.json_file.png" >
+
+### package-lock.json
+
+- Based on the package manager we are using, the package-lock.json/ yarn-lock.json file will be available in the created application.
+
+- This is only responsible for consistent installations of our dependencies like libraries/other npm packages.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/package-lock.json.png" >
+
+### .gitignore and README.md
+
+- .gitignore responsible to avoid the files which we don't want to upload in the repository.
+
+- README.ms is a documentation file.
+
+## Explanation on Folders
+
+### node_modules Folder
+
+- node_modules folder is the place where every dependencies of our application installed.
+
+- This folder get created while we create a project using create-react-app command.
+
+- if it is not created in that time, we can create it using npm i command.
+
+- it is responsible to run the application with all installed dependencies.
+
+### public Folder
+
+- This folder contains six files.
+
+- Among them favicon.ico , logo192.png , logo512.png , manifesr.json and roots.txt are nothing to deal with us. Few are just image files and remaining should not need to be discussed.
+
+### index.html file in public folder
+
+- index.html is one of the files under the public folder.
+
+* This file is the only html page for the entire react application.
+
+* It does not mean that we should not write another html pages than this.
+
+* As a single-page application, this index.html will be dynamically changed.
+
+* Basically we don't want to change any code in this index.html file.
+
+* Because In the body tag, there is div element with id root.
+
+* This div element is responsible for every page that appear in this application.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/index.html_image.png" >
+
+## src folder
+
+Src folder is the part where every development will happen.
+
+It has below files inside it:
+
+- index.js
+
+  index.js file is the starting point of react application.
+
+  In this index.js file we specify the root component which is app component and the DOM element which will be controlled by react and the DOM element we specified is element with id as root ( div element in index.html file under public folder )
+
+  So, In the react application app component is rendered inside the div element's DOM.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/index.js.png" >
+
+- App.js - App.js file is responsible for the view we see in the browser.
+
+- App.css - App.css is responsible for styling the App component.
+
+- App.test.js - It is for unit testing
+
+- index.css - It is for styling the body of this application.
+
+- logo.svg - It is just a image file.
+
+- reportWebVitals.js
+
+* setupTest.js
+
+# React application control flow ( What happens when we run react application using npm start command in terminal ? )
+
+- When we run the react application using the npm start command in terminal, the <b> index.html </b> file is served in the browser.
+
+* index.html contains the root DOM node.
+
+* Next, the control enters to the index.js file.
+
+* In the index.js file, the ReactDOM renders the App component into the root DOM node.
+
+* The App component contains the html which is displayed in the browser.

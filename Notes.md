@@ -2145,3 +2145,738 @@ export default NameList;
   * CSS Modules.
 
   * CSS in Js libraries.
+
+## CSS Stylesheets:
+
+- As usual, we should have the seperate css file .
+
+- Then we need to import the css file in the component and use the required classes with `className` attribute.
+
+* For example If we have a css file and a class as below:
+
+### StyleSheet.css :
+
+```
+.primary{
+    color:blue;
+}
+```
+
+- We can apply the class in the Component as below :
+
+### StyleSeet.js:
+
+```
+import React from "react";
+import "./StyleSheet.css";             // import the css file in the component.
+
+function StyleSheetComponent() {
+  return (
+    <div>
+      <h1 className="primary"> I am Stylesheet Component</h1>       // attach the className attribute and define the class
+    </div>
+  );
+}
+
+export default StyleSheetComponent;
+
+```
+
+### Conditional styling using props:
+
+- In the component the value which we consider for styling will be obtained as props as they have sent from their parent component through the attribute.
+
+- So, before applying the style first we need to define the condition and assign that value to the `className` attribute in the element.
+
+- For example, If the AppComponent is parent and that component sends the props as below:
+
+### App.js:
+
+```
+import "./App.css";
+import StyleSheetComponent from "./components/StyleSheet";
+
+function App() {
+  return (
+    <div className="App">
+      {
+        <div>
+          <StyleSheetComponent isPrimary={false} />     // Here isPrimary is value to the child
+        </div>
+      }
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+- And we should retrieve the value as props in the SyleSheetComponent and do as below to apply the style conditionally for any element.
+
+### StyleSheet.js :
+
+```
+import React from "react";
+import "./StyleSheet.css";
+
+function StyleSheetComponent(props) {
+  let headingTextColor = props.isPrimary ? "primary" : "";      // Defining style conditionally using props
+  return (
+    <div>
+        <h1 className={headingTextColor}> I am Stylesheet Component</h1> // Assigning the value to className attribute in required element.
+    </div>
+  );
+}
+
+export default StyleSheetComponent;
+
+```
+
+### Multiple classes:
+
+- If we want to apply multiple classes on single element, we want to use template literals with `className` attribute and need to seperate the classes with space.
+
+* If we need to use any variable instead of className , we must use that with $ sign as usual.
+
+* For example, I need to apply the both classes in the StyleSheet.css :
+
+### StyleSheet.css :
+
+```
+.primary{
+    color:blue;
+}
+
+.big-header{
+    font-size: 150px;
+}
+
+```
+
+- We want to apply them both in the component like below :
+
+### StyleSheet.js :
+
+```
+import React from "react";
+import "./StyleSheet.css";
+
+function StyleSheetComponent(props) {
+  let headingTextColor = props.isPrimary ? "primary" : "";
+  return (
+    <div>
+      <h1 className={`${headingTextColor} big-header`}>             // multiple classes applied with ` `.
+        I am Stylesheet Component
+      </h1>
+    </div>
+  );
+}
+
+export default StyleSheetComponent;
+
+```
+
+## Inline Styling :
+
+- In React Inline styling is not specified as string. Instead it is specified with an object whose key is camelcased version of the style name and the value is usually a string.
+
+* For example we can have a inline style as below :
+
+```
+const inlineStyleExample = {
+  fontSize: '30px',                         // Here , font-size stylename is camelcased and value is normal string.
+  backgroundColor: 'yellow',
+  paddingTop: '10px'
+}
+
+```
+
+- We can apply this inline style in the element we want using the style attribiute on the element as below:
+
+### Inline.js :
+
+```
+import React from "react";
+
+const inlineStyleExample = {
+  fontSize: "30px", // Here , font-size stylename is camelcased and value is normal string.
+  backgroundColor: "yellow",
+  paddingTop: "10px",
+};
+
+function Inline() {
+  return (
+    <div>
+      <h1 style={inlineStyleExample}>I am Inline...</h1>   {/* Inline style applied using style attribute  */}
+    </div>
+  );
+}
+
+export default Inline;
+
+```
+
+## CSS Modules :
+
+- css Modules is partially similar to the noraml styleSheet appraoch.
+
+- CSS modules feature is available only on react-scripts version 2 or higher.
+
+* As CSS modules are also sepearte files for CSS , the naming convention need to be followed on the CSS module files. The name of the file should be extended with `.module.css`. For example, `appStyles.module.css` is a CSS module file.
+
+* In the style sheets, there is no change. We can have styles as we usually do in the normal styleSheets as below:
+
+### appStyles.module.css:
+
+```
+.new{
+    color:green;
+}
+
+```
+
+- To import the module styles in the component, we should use the named import like below ( importing the module styles in app component ):
+
+### App.js :
+
+```
+import "./App.css";
+import "./appStyles.css";                              // Normal styleSheet import
+import styles from "./appStyles.module.css";          // CSS Module stylesheet import
+
+function App() {
+  return (
+    <div className="App">
+      {
+        <div>
+          <h1 className="normal"> I am normal </h1>                       // Applying normal CSS
+          <h1 className={styles.new}>I am CSS module style</h1>           // Applying CSS module class
+        </div>
+      }
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+## Advantage of using the CSS Modules:
+
+- The classes are locally scoped by default.
+
+* If a class is used in an component and if we try to use the same class in the childern component the CSS module classes won't allow it.
+
+* The normal stylesheet method allow us to use the class in the child component too. But CSS module method styling protects this behaviour and avoid the unwanted confusions.
+
+### App.js ;
+
+```
+import "./App.css";
+import "./appStyles.css";
+import styles from "./appStyles.module.css";
+import Inline from "./components/Inline";
+
+function App() {
+  return (
+    <div className="App">
+      {
+        <div>
+          <h1 className="normal"> I am normal </h1>
+          <h1 className={styles.new}>I am CSS module style</h1>
+          <Inline />     // child component
+        </div>
+      }
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+### Inlline.js :
+
+```
+import React from "react";
+
+const inlineStyleExample = {
+  fontSize: "30px", // Here , font-size stylename is camelcased and value is normal string.
+  backgroundColor: "yellow",
+  paddingTop: "10px",
+};
+
+function Inline() {
+  return (
+    <div>
+      <h1 className="normal">I am check </h1>
+      <h1 className={styles.new}>I am check</h1>                  // We can use this
+      <h1 style={inlineStyleExample}>I am Inline...</h1>          // We can use like this (It will throw error)
+      {/* Inline style applied using style attribute  */}
+    </div>
+  );
+}
+
+export default Inline;
+
+```
+
+# Basics of Form Handling :
+
+## Controlled components:
+
+- React needs to control the elements like input , textArea and so on in order to handle forms. Such HTML elemenst which values are controlled by the React are known as controlled components.
+
+* For Example , we can think about an input element. This input element should have value and also the value and the value will change whenever the user types. So, input element must have the onChange event handler too inorder to capture the updated value.
+
+* Basically in a component, we will handle the values in the `state` and update the values using the `setState` method. So the value attribute of the input element must be assigned with the state and the onChange event Handler must update the state value using setState method in a React component.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/basic_form_element_life_cycle.png" >
+
+### Steps to turn a normal HTML element to controlled Component in Form:
+
+- First initialize the state in the component.
+
+* Second Assign the value attribute of the HTML element with state of the component.
+
+* Finally, Assign the onChange eventHandler with setState method and update the state with the onChange event.
+
+* Below is the example for controlled component ( Normal HTML input to React Controlled Component in a Form )
+
+### Form.js :
+
+```
+import React, { Component } from "react";
+
+class FormComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: "",
+    };
+  }
+
+  userNameChangeHandler = (event) => {
+    this.setState({
+      userName: event.target.value,
+    });
+  };
+
+  render() {
+    const margin = { marginRight: "10px" };
+    return (
+      <div>
+        <h1>Form Component</h1>
+        <form>
+          <div>
+            <label style={margin}>Enter userName</label>
+            <input
+              type="text"
+              value={this.state.userName}
+              onChange={this.userNameChangeHandler}
+            />
+          </div>
+        </form>
+      </div>
+    );
+  }
+}
+
+export default FormComponent;
+
+```
+
+### Submitting Form :
+
+- Submit a Form with a submit button which has type attribute set with submit key. Also add the onSumit event Handler in Form tag and write the logic of form Submission in that event handler method.
+
+* Also wrie the `event.preventDefault()` method while handle the logic for form submission. It will avoid the default behaviour of the submit button which automatically set the values to initial. After called the event.preventDefault() method , there is no problem.
+
+### Form.js :
+
+```
+import React, { Component } from "react";
+
+class FormComponent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: "",
+      comments: "",
+      topic: "React",
+    };
+  }
+
+  userNameChangeHandler = (event) => {
+    this.setState({
+      userName: event.target.value,
+    });
+  };
+
+  commentsChangeHandler = (event) => {
+    this.setState({
+      comments: event.target.value,
+    });
+  };
+
+  topicChangeHandler = (event) => {
+    this.setState({
+      topic: event.target.value,
+    });
+  };
+
+  handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(
+      "values : ",
+      this.state.userName,
+      this.state.comments,
+      this.state.topic
+    );
+  };
+
+  render() {
+    const marginRight = { marginRight: "10px" };
+    const marginTop = { marginTop: "20px" };
+    return (
+      <div>
+        <h1>Form Component</h1>
+        <form onSubmit={this.handleSubmit}>
+          <div>
+            <label style={marginRight}>Enter userName</label>
+            <input
+              type="text"
+              value={this.state.userName}
+              onChange={this.userNameChangeHandler}
+            />
+          </div>
+          <div style={marginTop}>
+            <label style={marginRight}>Enter Your Comments </label>
+            <textarea
+              type="text"
+              value={this.state.comments}
+              onChange={this.commentsChangeHandler}
+            ></textarea>
+          </div>
+          <div style={marginTop}>
+            <label style={marginRight}>Topics</label>
+            <select value={this.state.topic} onChange={this.topicChangeHandler}>
+              <option value="React">React</option>
+              <option value="Angular">Angular</option>
+              <option value="Vue">vue</option>
+            </select>
+          </div>
+          <button style={marginTop} type="submit">
+            Submit
+          </button>
+        </form>
+      </div>
+    );
+  }
+}
+
+export default FormComponent;
+
+```
+
+# Component life-cycle methods :
+
+- When we create a component in React application, the component goes through several stages in it's lifecycle.
+
+* React provides us build-in methods to override at the particular stages in the life-cycle.
+
+* Life-cycle methods are not available for functionalComponents. LifeCycle methods are only for Class Components.
+
+## Classification of Life cycle methods:
+
+- The life cycle methods are classified into four categories as below:
+
+  - Mounting
+
+  * updating
+
+  * Unmounting
+
+  * Error Handling
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/life_cycle_methods_classifications.png" >
+
+- Mounting state has 4 methods.
+
+- Updating state has 5 methods.
+
+* unmounting state has 1 method.
+
+* Error handling state has 3 methods.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/life_cycle_methods_list.png" >
+
+# mounting life cycle methods :
+
+- Mounting life cycle methods are methods which are called when an instanceof an component being created and inserted into the DOM.
+
+## 1) constructor :
+
+- Constructor is a special function will get called whenever a component is created.
+
+* The constructor is used for initalizing state or binding the eventhandlers to the class instance.
+
+* We should not make HTTP request in constructor.
+
+* While defining the constructor the below points must be considered:
+
+  - We need to call the special function `super(props)`. This super() will call the base class constructor.In our component, If we want access for `this.props`, It is only possible after we call the super() in constructor by passing the props as argument to it like `super(props)`.
+
+  * Constructor is the only place where we expected to set/change the state using `this.state`. For remaining areas except constructor we must use `setState method` to handle the state.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/constructor_lifecycle_method_summarization.png" >
+
+## 2 ) getDerivedStateFromProps( props,state ) :
+
+- This method is rarely used life cycle method.
+
+* getDerivedStateFromProps() method is used when the state of a component deponds on changes in props over time.
+
+* Consider that we have a component.And the inital state of a component deponds on the props passed to the component. In such situations, this method is used to set the state.
+
+* Since this method is a static method, this does not have the access to use `this` keyword. So, we cannot access the `this.setState()` method inside this particular getDerivedStateFromProps() method. Instead of calling the this.setState() method, we should return an object that represents the new state of the component.
+
+* We should not call endpoints/http request/fetching data.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/getDerivedStateFromprops_lifecycle_method_summary.png" >
+
+## 3) render method :
+
+- render method is the only required method in a class component.
+
+* In this render method we simply read `this.props` and `this.state` and return JSX which describes the UI.
+
+* We should not change state or interact with DOM or Make AJAX calls in the render method.
+
+* Since render method returns the JSX which may also have the children components, the children components life cycle methods are also be executed with in this render method.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/render_lifecycle_method_summary.png" >
+
+## 4) componentDidMount method :
+
+- This is the final method in the Mounting face of component life cycle.
+
+- This method will be called only once in the whole life cycle of a component and it is invoked immediately after a component or it's children components have been rendered to the DOM.
+
+* This method is the perfect place to cause side effects. For example, to interact with the DOM or perform AJAX calls to load data this method is perfect.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/componentDidmount_lifecycle_method_summary.png" >
+
+## Order of Execution of Mounting stage life cycle methods:
+
+- let us have a class component and create every life cycle methods in Mounting stage and identify the order of executions:
+
+### LifeCycleA.js :
+
+```
+import React, { Component } from "react";
+
+class LifeCycleA extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      name: "Vijay",
+    };
+    console.log(" LifeCycleA constructor ");
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log("lifeCycleA getDerivedStateFromProps");
+    return null;
+  }
+
+  componentDidMount() {
+    console.log("LifeCycleA componentDidMount");
+  }
+
+  render() {
+    console.log("LifCycleA render");
+    return (
+      <div>
+        <h1>I am LifeCycleA component </h1>
+      </div>
+    );
+  }
+}
+
+export default LifeCycleA;
+
+
+```
+
+- We can see the order of exceution in the console as below:
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/LifeCycleA_order-of_execution.png" >
+
+## order of execution of Mouting state methods when a component has child component :
+
+- We can have a LifeCycleB as child component and have the same consoles as parent as below:
+
+### LifeCycleA.js (Parent) :
+
+```
+import React, { Component } from "react";
+import LifeCycleB from "./LifeCycleB";
+
+class LifeCycleA extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      name: "Vijay",
+    };
+    console.log(" LifeCycleA constructor ");
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log("lifeCycleA getDerivedStateFromProps");
+    return null;
+  }
+
+  componentDidMount() {
+    console.log("LifeCycleA componentDidMount");
+  }
+
+  render() {
+    console.log("LifCycleA render");
+    return (
+      <div>
+        <h1>I am LifeCycleA component </h1>
+        <LifeCycleB />
+      </div>
+    );
+  }
+}
+
+export default LifeCycleA;
+
+```
+
+### LifeCycleB.js ( Child component ) :
+
+```
+import React, { Component } from "react";
+
+class LifeCycleB extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      name: "Vijay",
+    };
+    console.log(" LifeCycleB constructor ");
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log("LifeCycleB getDerivedStateFromProps");
+    return null;
+  }
+
+  componentDidMount() {
+    console.log("LifeCycleB componentDidMount");
+  }
+
+  render() {
+    console.log("LifCycleA render");
+    return (
+      <div>
+        <h1>I am LifeCycleB component </h1>
+      </div>
+    );
+  }
+}
+
+export default LifeCycleB;
+
+```
+
+- As we already discussed in render method, the child component's life cycle methods are executed after the parent component's render method. Finally the parent component's componentDidNMount() got executed.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/order_of_execution_lifeCycleA_with_child_lifeCycleB.png" >
+
+# updating life cycle methods:
+
+- updating life cycle methods are methods being called when a component is being rerendered because of changes to either props or state.
+
+* We have 5 methods in it. Out of 5, we have already discussed some of them.
+
+* The methods as belows:
+
+  - getDerivedStateFromProps( props , state ) --> Already discussed in Mounting phase itself
+
+  * shouldComponentUpdate( nextProps , nextState )
+
+  * render --> Already discussed in Mounting phase itself
+
+  * getSnapshotBeforeUpdate( prevProps, prevState )
+
+  * componentDidUpdate( prevProps, prevState , snapshot )
+
+## 1) getDerivedStateFromProps( props , state ) :
+
+- As we discussed earlier we can just recap as below:
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/update_phase_getDerievedStateFromProps_method.png" >
+
+## 2 ) shouldComponentUpdate( nextProps , nextState ) :
+
+- This method receives the updated State and props as argument.
+
+- This method dictates if the component should re-render or not.
+
+* By default, all class components will rerender whenever the Props they receive or state changes.
+
+* This method can prevent the default behaviour by returning false.
+
+* With this method , we can compare the excisiting state/props value with the next state/props value and return either true or false to let React know wheather the component should update or not.
+
+* It is basically performance optimization.
+
+* We should avoid causing side affects by not doing HTTP request andcalling the setState method.
+
+* It is a rarely used life cycle method.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/update_phase_souldComponentUpdate_method_summary.png" >
+
+## 3 ) render :
+
+- render method has been already discussed in mounting phase itself.
+
+- Below image is the quick recall:
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/update_phase_render_method_summary.png" >
+
+## 4 ) getSnapshotBeforeUpdate( prevprops, prevState ) :
+
+- This method accepts prevprops and prevState as it's parameters.
+
+- This method is called right before the changes from the virtual DOM are to be reflected in the DOM.
+
+* It is also a rarely used method.
+
+* This method captures some information from the DOM. For example, we can read the user's scroll position and after a update we canmaintain the scroll position by performing some calculations.
+
+* This method either return null or retuen a value. Returned value will be passed as the third parameter to the componentDidUpdate() method.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/update_phase_getSnapshotBeforeUpdate_method_summary.png" >
+
+## 5) componentDidUpdate( prevProp, prevState, snapshot ) :
+
+- This method is called when render is finished in the re-render cycles. This means that the component and the all the sub-components have properly rendered itself after the update.
+
+* This method gets three properties like prevProp, prevState and snapshot which returned from the getSnapshotBeforeUpdate method.
+
+* This method is guarenteed to be called only once in the re-render cycle.
+
+* we can make AJAX calls in this method. Before make any AJAX call, we should compare the pervState and prevProps values with currentState and currentProps values to decide wheather to make AJAX calls or not. This practice avoids unwanted AJAX calls.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/update_phase_componentDidupdate_method_summary.png" >
+
+## Order of execution in update_pahse lifecycle methods:

@@ -1,12 +1,19 @@
 import "./App.css";
-import NameList from "./components/NameList";
+import "./appStyles.css";
+import LifeCycleA from "./components/LifeCycleA";
 
 function App() {
   return (
     <div className="App">
       {
         <div>
-          <NameList />
+          <LifeCycleA />
+          {/* <FormComponent /> */}
+          {/* <h1 className="normal"> I am normal </h1> */}
+          {/* <h1 className={styles.new}>I am CSS module style</h1> */}
+          {/* <Inline /> */}
+          {/* <StyleSheetComponent isPrimary={false} /> */}
+          {/* <NameList /> */}
           {/* <UserGreeting /> */}
           {/* <ParentComponent /> */}
           {/* <EventBind /> */}

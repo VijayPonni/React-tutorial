@@ -3254,3 +3254,534 @@ export default PureComp;
 <img style="margin-top:10px;margin-bottom:10px" src="assets/pure_component_definition.png" >
 
 <img style="margin-top:10px;margin-bottom:10px" src="assets/pure_component_summary.png" >
+
+# memo
+
+- memo is similar to PureComponents. PureComponents is only for class components and `React.memo` works same as that pureComponents for `FunctionalComponent`.
+
+* To convert a regular functionalComponent to MemoComponent, we should export the functionalComponent with `React.memo()` as below:
+
+### MemoComp.js :
+
+```
+import React from "react";
+
+function MemoComp({ name }) {
+  console.log("Memo component rerender");
+  return <div>Memo Component {name}</div>;
+}
+
+export default React.memo(MemoComp);    // Converting Regular functional Component as MemoComponent using React.memo()
+
+```
+
+# Refs :
+
+- basically Refs make it possible to access the DOM nodes directly within React.
+
+* There are multiple usecases to use Refs. One of the common usecase is `focusing the input field`. For example If we have a LogIn Form and we need to focus the first input field while the component initialized we can acheive this using the Refs.
+
+## Implementing Refs for focusing input fileds while the component gets load:
+
+### RefsComp.js ( Before Implementing Refs ):
+
+```
+import React, { Component } from "react";
+
+class RefsDemo extends Component {
+  render() {
+    return (
+      <div>
+        <p>RefsComponent</p>
+        <input type="text" />
+      </div>
+    );
+  }
+}
+
+export default RefsDemo;
+
+```
+
+- We can achieve the Refs implementation for focusing the input filed in three steps.
+
+### Step 1 : Creating new property using React.createRef() method:
+
+- In a class component constructor , we should create a new property and assign that new propert with the `React.createRef()` method which reserved in React.
+
+### RefsDemo.js :
+
+```
+import React, { Component } from "react";
+
+class RefsDemo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.firstInputRef = React.createRef();        // 1 ) Creating New Property with React.createRef()
+  }
+
+  render() {
+    return (
+      <div>
+        <p>RefsComponent</p>
+        <input type="text" />
+      </div>
+    );
+  }
+}
+
+export default RefsDemo;
+
+```
+
+### Step 2 : Attaching the ref with the Element :
+
+- To attach the Ref with the element, we must use the reserved attribute `ref` in that element and assign the attribute value to the newly created property.
+
+### RefsDemo.js :
+
+```
+import React, { Component } from "react";
+
+class RefsDemo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.firstInputRef = React.createRef(); // 1 ) Creating New Property with React.createRef()
+  }
+
+  render() {
+    return (
+      <div>
+        <p>RefsComponent</p>
+        <input type="text" ref={this.firstInputRef} />
+        {/* 2 ) Assigning the new property with ref attribute in the element */}
+      </div>
+    );
+  }
+}
+
+export default RefsDemo;
+
+```
+
+- Before moving to the third step, we should check wheather the newly created Ref property points to DOM node correctly. We can check it by logging the newly created Ref property ( in our example that is this.firstInputRef ) in the componentDidMount method which is triggered while the component gets loaded.
+
+* This log will contain an Object which has `current` as a propert and the current property will points to the `DOM node` which we had referenced in our component.
+
+* For example:
+
+### RefDemo.js :
+
+```
+import React, { Component } from "react";
+
+class RefsDemo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.firstInputRef = React.createRef(); // 1 ) Creating New Property with React.createRef()
+  }
+
+  componentDidMount() {
+    console.log("Input Ref property", this.firstInputRef); // Consoling the Ref Propert
+  }
+
+  render() {
+    return (
+      <div>
+        <p>RefsComponent</p>
+        <input type="text" ref={this.firstInputRef} />
+        {/* 2 ) Assigning the new property with ref attribute in the element */}
+      </div>
+    );
+  }
+}
+
+export default RefsDemo;
+
+```
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/refs_current_propert.png" >
+
+### Step 3 : Calling required method on the node using the `current` property :
+
+- Now we can access the DOM node using the `current` property of the newly created Ref method.
+
+- In our example, we can access the `focus()` in the componentDidMount() method to load te component with focused input field.
+
+### RefsDemo.js :
+
+```
+
+import React, { Component } from "react";
+
+class RefsDemo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.firstInputRef = React.createRef(); // 1 ) Creating New Property with React.createRef()
+  }
+
+  componentDidMount() {
+    this.firstInputRef.current.focus(); // 3 ) Calling required methods using `current` property in the Ref Property.
+    console.log("Input Ref property", this.firstInputRef); // Consoling the Ref Propert
+  }
+
+  render() {
+    return (
+      <div>
+        <p>RefsComponent</p>
+        <input type="text" ref={this.firstInputRef} />
+        {/* 2 ) Assigning the new property with ref attribute in the element */}
+      </div>
+    );
+  }
+}
+
+export default RefsDemo;
+
+```
+
+## callbackRefs approach :
+
+- React also supports another second way to set the Refs which is called `callbackRefs` approach.
+
+* We can take the same focusing on the input field example to understand the callbackRefs approach.
+
+### Implementing CallbackRefs in a component for focusing the input element while loading :
+
+### Before implementing CallbackRefs in CallbackResDemo.js :
+
+```
+import React, { Component } from "react";
+
+class CallbackRefsDemo extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {}
+
+  render() {
+    return (
+      <div>
+        <p>CallbackRefs Approach</p>
+        <input type="text" />
+      </div>
+    );
+  }
+}
+
+export default CallbackRefsDemo;
+
+```
+
+- We can acheive this in simple 4 steps as below :
+
+### step 1 : Create the Ref :
+
+- In this approach, we must create the new property in constructor and assign the `null` value to it.
+
+### CallbackRefsDemo.js :
+
+```
+import React, { Component } from "react";
+
+class CallbackRefsDemo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.callBackRef = null; // 1) Creating new property with null value in constructor.
+  }
+
+  componentDidMount() {}
+
+  render() {
+    return (
+      <div>
+        <p>CallbackRefs Approach</p>
+        <input type="text" />
+      </div>
+    );
+  }
+}
+
+export default CallbackRefsDemo;
+
+```
+
+### Step 2: Create a new method to assign the created Ref:
+
+- In this step, we must create a new method in the constructor.
+
+* That method should have a parameter ( It will reference the Element ) and that parameter should be assigned as a value to the already created Ref in the first step.
+
+### CallbackRefsDemo.js :
+
+```
+import React, { Component } from "react";
+
+class CallbackRefsDemo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.callBackRef = null; // 1) Creating new property with null value in constructor.
+
+    // 2) Creating a new method and assign the Ref with the parameter value.
+    this.setCallBackRef = (element) => {
+      this.callBackRef = element;
+    };
+  }
+
+  componentDidMount() {}
+
+  render() {
+    return (
+      <div>
+        <p>CallbackRefs Approach</p>
+        <input type="text" />
+      </div>
+    );
+  }
+}
+
+export default CallbackRefsDemo;
+
+```
+
+### Step 3 : Attaching the Ref with require Element :
+
+- We should attach the Ref which we have created so far with the Element like input field or whatever using `ref` attribute which is reserved in React.
+
+- So, In that element's `ref` attribute, we must assign the created method where the Created Ref property is assigned with some value ( Which we have created in step 2 )
+
+### CallbackRefsDemo.js :
+
+```
+import React, { Component } from "react";
+
+class CallbackRefsDemo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.callBackRef = null; // 1) Creating new property with null value in constructor.
+
+    // 2) Creating a new method and assign the Ref with the parameter value.
+    this.setCallBackRef = (element) => {
+      this.callBackRef = element;
+    };
+  }
+
+  componentDidMount() {}
+
+  render() {
+    return (
+      <div>
+        <p>CallbackRefs Approach</p>
+        {/* 3 ) Setting the ref attribute with newly created method where we assign the Ref property value to element  */}
+        <input type="text" ref={this.setCallBackRef} />{" "}
+      </div>
+    );
+  }
+}
+
+export default CallbackRefsDemo;
+
+```
+
+- Before moving to the final step we just need to know something about the CallbakRef approach.
+
+* React will call the CallbackRefs which are connect to the DOM nodes while the component Mounts and also call the Refs with null While the component unMounts.
+
+* So it is necessary in callBackRefs to check wheather the value exists for callbackRef before accessing the DOM methods / properties according to our need.
+
+* Unlike the previous approac we can directly access the CallBackRefs without using the current property.
+
+### Step 4 : Accessing the required property using CallbackRef:
+
+- we can access the required property or method on the element as below: (Checking the value existence is important )
+
+### CallBackRefsDemo.js :
+
+```
+import React, { Component } from "react";
+
+class CallbackRefsDemo extends Component {
+  constructor(props) {
+    super(props);
+
+    this.callBackRef = null; // 1) Creating new property with null value in constructor.
+
+    // 2) Creating a new method and assign the Ref with the parameter value.
+    this.setCallBackRef = (element) => {
+      this.callBackRef = element;
+    };
+  }
+
+  componentDidMount() {
+    // 4 ) Accessing the CallBackRef methods/properties we need
+    if (this.callBackRef) {
+      this.callBackRef.focus();
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <p>CallbackRefs Approach</p>
+        {/* 3 ) Setting the ref attribute with newly created method where we assign the Ref property value to element  */}
+        <input type="text" ref={this.setCallBackRef} />{" "}
+      </div>
+    );
+  }
+}
+
+export default CallbackRefsDemo;
+
+```
+
+# Refs with ClassComponents :
+
+- In some special cases like we want to apply the Refs for the ClassComponent which is a child of another class component.
+
+- For example, parent component's button click should trigger the focus event of a child component which is also a child component.
+
+- We can acheive this as below code snippets show:
+
+### FocusInput.js ( Parent Component ) :
+
+```
+import React, { Component } from "react";
+import InputComponent from "./Input";
+
+class FocusInput extends Component {
+  constructor(props) {
+    super(props);
+
+    this.inputRef = React.createRef();
+  }
+
+  clickandler = () => {
+    this.inputRef.current.onFocus();
+  };
+
+  render() {
+    return (
+      <div>
+        <p>Parent Component</p>
+        <InputComponent ref={this.inputRef} />
+        <button onClick={this.clickandler}>Click Me !</button>
+      </div>
+    );
+  }
+}
+
+export default FocusInput;
+
+```
+
+### Input.js ( Child Component ):
+
+```
+
+import React, { Component } from "react";
+
+class InputComponent extends Component {
+  constructor(props) {
+    super(props);
+
+    this.inputRef = React.createRef();
+  }
+
+  onFocus() {
+    this.inputRef.current.focus();
+  }
+
+  render() {
+    return (
+      <div>
+        <p>Input Component</p>
+        <input type="text" ref={this.inputRef} />
+      </div>
+    );
+  }
+}
+
+export default InputComponent;
+
+```
+
+# Forwarding Refs :
+
+- Ref forwarding is a technique for automatically passing a ref through a component to one of it's children.
+
+* This approach allow the parent component to directly reference the child component's element which we want to apply Ref.
+
+* React allows to pass the child component as the parameter to the reserved `React.forwardRef()` method and the Ref configurations should be done in the Parent component as usual.
+
+* In the child component where the `React.forwardRef()` implemented we should configure the Ref too.
+
+* React.forwardRef method accepts the component as parameter. If this is a Functional Component , It gets the `ref` as second argument which will be used to configure the child component element with the parent component's Ref.
+
+### ForwardRefParent.js ( Parent ) :
+
+```
+import React, { Component } from "react";
+import ForwardRefInput from "./ForwardRefInput";
+
+class ForwardRefParent extends Component {
+  constructor(props) {
+    super(props);
+
+    this.inputRef = React.createRef();
+  }
+
+  clickHandler = () => {
+    this.inputRef.current.focus();
+  };
+
+  render() {
+    return (
+      <div>
+        <p>Forward Ref Parent Component</p>
+        <ForwardRefInput ref={this.inputRef} />
+        <button onClick={this.clickHandler}>Click Me!</button>
+      </div>
+    );
+  }
+}
+
+export default ForwardRefParent;
+
+```
+
+### ForwardRefInput.js ( Child ) :
+
+```
+import React from "react";
+
+// function ForwardRefInput() {
+//   return (
+//     <div>
+//       <p>Forward Ref Input Component</p>
+//       <input type="text" />
+//     </div>
+//   );
+// }
+
+const ForwardRefInput = React.forwardRef((props, ref) => {
+  return (
+    <div>
+      <p>Forward Ref Input Component</p>
+      <input type="text" ref={ref} />
+    </div>
+  );
+});
+
+export default ForwardRefInput;
+
+```
+
+# Portals :

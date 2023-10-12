@@ -2880,3 +2880,377 @@ export default LifeCycleB;
 <img style="margin-top:10px;margin-bottom:10px" src="assets/update_phase_componentDidupdate_method_summary.png" >
 
 ## Order of execution in update_pahse lifecycle methods:
+
+- We can take the LifeCycleA and LifeCycleB components as example to explain this updating phase methods same as Mounting phase.
+
+- In order to trigger the updating phase methods, wemust change the state or props in component. We can do it with a button click. So I have add a button click event and the update phase methods in the existing LifeCycleA and LifeCycleB components.
+
+### LifeCycleA.js :
+
+```
+import React, { Component } from "react";
+import LifeCycleB from "./LifeCycleB";
+
+class LifeCycleA extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      name: "Vijay",
+    };
+    console.log(" LifeCycleA constructor ");
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log("lifeCycleA getDerivedStateFromProps");
+    return null;
+  }
+
+  componentDidMount() {
+    console.log("LifeCycleA componentDidMount");
+  }
+
+  shouldComponentUpdate() {
+    console.log("lifeCycleA shouldComonentUpdate");
+    return true;
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log("lifeCycleA getSnapshotBeforeUpdate");
+    return null;
+  }
+
+  componentDidUpdate() {
+    console.log("lifeCycleA componentDidUpdate");
+  }
+
+  clickHandler = () => {
+    this.setState({
+      name: "SU Vijay",
+    });
+  };
+
+  render() {
+    console.log("LifCycleA render");
+    return (
+      <div>
+        <h1>I am LifeCycleA component </h1>
+        <button onClick={this.clickHandler}>Click me to change Name</button>
+        <LifeCycleB />
+      </div>
+    );
+  }
+}
+
+export default LifeCycleA;
+
+
+```
+
+### LifeCycleB.js :
+
+```
+import React, { Component } from "react";
+
+class LifeCycleB extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      name: "Vijay",
+    };
+    console.log(" LifeCycleB constructor ");
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log("LifeCycleB getDerivedStateFromProps");
+    return null;
+  }
+
+  componentDidMount() {
+    console.log("LifeCycleB componentDidMount");
+  }
+
+  shouldComponentUpdate() {
+    console.log("LifeCycleB shouldComonentUpdate");
+    return true;
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log("LifeCycleB getSnapshotBeforeUpdate");
+    return null;
+  }
+
+  componentDidUpdate() {
+    console.log("LifeCycleB componentDidUpdate");
+  }
+
+  render() {
+    console.log("LifeCycleB render");
+    return (
+      <div>
+        <h1>I am LifeCycleB component </h1>
+      </div>
+    );
+  }
+}
+
+export default LifeCycleB;
+
+```
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/update_phase_order_of_execution_before_button_click.png" >
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/update_phase_order_of_execution_after_button_click.png" >
+
+# Unmounting Phase :
+
+- UnMounting phase just has one method which is componentWillUnmount()
+
+## componentWillUnmount method :
+
+- This method is invoked immediately before a component is unmounted or destroyed.
+
+* We can perform some clean up tasks like
+
+  - Cancelling any network task ,
+  - removing event handlers,
+  - cancelling any subscriptions,
+  - invalidating timers.
+
+* We should not call setState method.Because the component will never get rerender after unMounted.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/unMount_phase_componentWillUnmount_method_summary.png" >
+
+# Error Handling Phase methods:
+
+- This phase have two methods as below:
+
+  - static getDerivedStateFromError(error)
+
+  * componentDidCatch(error , info)
+
+* These two methods are called When there is an error either during rendering,in a lifecycle method, or in the costructor of any cild component.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/error_handling_phase_summary.png" >
+
+# Fragments:
+
+- Fragments basically help us to group the list of elements without adding extra nodes to the DOM.
+
+## Detailed explanation on Fragments:
+
+- Usually in react JSX, when we group multiple elements it will force us to group multiple elements under a single parent via a error message.
+
+* For example consider that I have grouped two elements in FragmentDemo Component without a single parent as below:
+
+### FragmentDemo.js :
+
+```
+import React from "react";
+
+function FragmentDemo() {
+  return (
+      <h1>Fragment Demo Component</h1>
+      <p>I am Fragment demo component's explanation only...</p>
+  );
+}
+
+export default FragmentDemo;
+
+```
+
+- Now we can see the error in both vs code and in the running application as below image shows:
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/JSX_fragment_error_messgae.png" >
+
+- Usually we can overcome this error message by wrapping up the list of elements using div element and that rectifies the error as below:
+
+### FragmentDemo.js:
+
+```
+import React from "react";
+
+function FragmentDemo() {
+  return (
+    <div>                                                     // Adding div tag
+      <h1>Fragment Demo Component</h1>
+      <p>I am Fragment demo component's explanation only...</p>
+    </div>
+  );
+}
+
+export default FragmentDemo;
+
+```
+
+- We can see the app running without any issue in the browser as below image shows:
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/Fragment_app_running.png">
+
+- The extra div tag has been also be the part in the DOM. We can confirm it when we inspect the element as below image shows:
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/div_tag_identification_fragment.png">
+
+- React Fragments helps us to group the list of elements with adding the extra node to the DOM. We can use `React.Fragment` element instaed of using div element as parent for the list of elements. This React.Fragment will not add any addintional node to DOM.
+
+### FragmentDemo.js :
+
+```
+import React from "react";
+
+function FragmentDemo() {
+  return (
+    <React.Fragment>
+      <h1>Fragment Demo Component</h1>
+      <p>I am Fragment demo component's explanation only...</p>
+    </React.Fragment>
+  );
+}
+
+export default FragmentDemo;
+
+```
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/fragment_React.Fragment.png">
+
+## Example :
+
+- If we have a situation where we cannot use the div tag as parent for some elements on that scenario we can utilize the React.Fragment instead of grouping the list of elements using div tag.
+
+* For td elements we cannot use div as parant. If we do so the below warning will be prompted in console
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/fragment_td_error_in_console.png" >
+
+- It is because I used the div element to group multiple elements as below :
+
+### Column.js :
+
+```
+import React from "react";
+
+function Columns() {
+  return (
+    <div>
+      <td>Column 1</td>
+      <td>Column 2</td>
+      <td>Column 3</td>
+      <td>Column 4</td>
+    </div>
+  );
+}
+
+export default Columns;
+
+```
+
+- This Column.js is a child of Table Component as below:
+
+### Table.js :
+
+```
+import React from "react";
+import Columns from "./Columns";
+
+function Table() {
+  return (
+    <table>
+      <tbody>
+        <tr>
+          <Columns />
+        </tr>
+      </tbody>
+    </table>
+  );
+}
+
+export default Table;
+
+```
+
+- So To avoid the error in the console , I changed the normal div to React.Fragmrnt as below in the Columns.js component and the error resolved and there is no div node added to the DOM.
+
+### Columns.js :
+
+```
+import React from "react";
+
+function Columns() {
+  return (
+    <React.Fragment>
+      <td>Column 1</td>
+      <td>Column 2</td>
+      <td>Column 3</td>
+      <td>Column 4</td>
+    </React.Fragment>
+  );
+}
+
+export default Columns;
+
+```
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/fragment_no_error.png" >
+
+## Important points on Fragments:
+
+- We can use `React.Fragment` as empty element like `<></>`. This also represents the React Fragment and this will no t allow any extra nodes to the DOM.
+
+- When we use `<React.Fragment> ... </React.Fragment>` , we can add `key` attribute to the element if we require as below:
+
+```
+.
+.
+.
+<React.Fragment key= { ... } >
+.
+.
+.
+</React.Fragment>
+.
+.
+.
+
+```
+
+# Pure Components:
+
+## Creating Pure Component :
+
+- We usually create class components in React by extending a class with `Component` key which is provided y react library. We can also create class Components by extending the class with `PureComponent` key which also provided by the react library as below:
+
+### PureComp.js :
+
+```
+
+import React, { PureComponent } from "react";
+
+class PureComp extends PureComponent {
+  render() {
+    return <div>Pure Component</div>;
+  }
+}
+
+export default PureComp;
+
+```
+
+## Comparison between Regular Component and Pure Component :
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/pure-component_comparison_with_regular_component.png" >
+
+## Shallow Comparison :
+
+- We can know shallow comparsion for both primitive types and Complec types:
+
+  - primitive types like string , number , boolean , etc.
+
+  - Complex types like Array and Objects.
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/pure_components_shallow_comparision.png" >
+
+## Definition:
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/pure_component_definition.png" >
+
+<img style="margin-top:10px;margin-bottom:10px" src="assets/pure_component_summary.png" >
